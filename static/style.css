@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+#evalbar {
+  transition: height 0.5s ease-out;
+}
+
 .square {
   @apply w-16 h-16 border select-none;
 }

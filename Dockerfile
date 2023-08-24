@@ -6,7 +6,7 @@ RUN npx tailwindcss -i /app/static/style.css -o /app/build.css --minify
 FROM rust:1.71 as rust
 COPY . /app
 WORKDIR /app/lib/evaluation/
-RUN cargo build
+RUN cargo build --release
 
 FROM ubuntu as prod
 ENV DEV=false
@@ -16,7 +16,7 @@ COPY . /app
 WORKDIR /app
 
 COPY --from=tailwind /app/build.css /app/static/tailwind.css
-RUN mkdir -p /app/lib/evaluation/target/debug
-COPY --from=rust /app/lib/evaluation/target/debug/evaluation /app/lib/evaluation/target/debug/evaluation
+RUN mkdir -p /app/lib/evaluation/target/release
+COPY --from=rust /app/lib/evaluation/target/release/evaluation /app/lib/evaluation/target/release/evaluation
 
 CMD [ "/app/start.sh" ]

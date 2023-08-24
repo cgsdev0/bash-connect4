@@ -1,10 +1,13 @@
-use connect4_ai::{ bitboard::BitBoard, solver::Solver, opening_database::OpeningDatabase };
+use connect4_ai::{bitboard::BitBoard, opening_database::OpeningDatabase, solver::Solver};
 
 fn main() {
     let mut input = String::new();
     std::io::stdin().read_line(&mut input).unwrap();
     let input = input.trim();
-    let mut solver = Solver::new(BitBoard::from_moves(&input).unwrap());
+    let Ok(board) = BitBoard::from_moves(&input) else {
+        std::process::exit(0);
+    };
+    let mut solver = Solver::new(board);
     let opening_database = OpeningDatabase::load();
     if let Ok(database) = opening_database {
         solver = solver.with_opening_database(database);
@@ -22,5 +25,5 @@ fn main() {
     let score = (score as f32) / (x as f32) / 2.0;
     let score = score + 0.5;
 
-    println!("{}", (score * 100.0) as i8)
+    println!("{}", (score * 100.0).clamp(0.0, 100.0) as i8)
 }

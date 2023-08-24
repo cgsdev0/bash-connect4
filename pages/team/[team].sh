@@ -6,12 +6,11 @@ if [[ "$TEAM" != "red" ]] && [[ "$TEAM" != "yellow" ]]; then
 fi
 
 
-htmx_page << EOF
-    <div hx-sse="connect:/sse/$TEAM">
+htmx_page <<-EOF
+    <div hx-ext="sse" sse-connect="/sse/$TEAM">
     <div class="flex">
-        <div class="flex flex-col">
-            $(component "/board/$TEAM")
-        </div>
+        $(component "/board/$TEAM")
+    </div>
 
         $(component "/leaderboard")
     </div>

@@ -12,12 +12,20 @@ cat <<-EOF > data/board
 EOF
 echo "red" > data/turn
 printf "" > data/moves
+echo "50" > data/eval
 rm -f data/winlock
 }
 
 export -f reset_board
 
-if [[ ! -f data/board ]] || [[ ! -f data/turn ]]; then
+if [[ ! -f data/board ]] \
+  || [[ ! -f data/turn ]] \
+  || [[ ! -f data/leaderboard ]] \
+  || [[ ! -f data/eval ]]; then
+    touch data/eval
+    touch data/board
+    touch data/turn
+    touch data/leaderboard
     reset_board
 fi
 

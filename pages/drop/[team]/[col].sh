@@ -4,7 +4,7 @@ if [[ "$REQUEST_METHOD" != "POST" ]]; then
   return $(status_code 405)
 fi
 
-if [[ -f data/winlock ]]; then 
+if [[ -f data/winlock ]]; then
   return $(status_code 423)
 fi
 source config.sh
@@ -41,7 +41,7 @@ function find_row() {
     COL=$1
     (( COL-- ))
     INDEX=0
-    while IFS= read -r line; do 
+    while IFS= read -r line; do
         if [[ "${line:$COL:1}" != "0" ]]; then
             echo $(( INDEX - 1 ))
             return
@@ -106,9 +106,28 @@ fi
 write $ROW ${PATH_VARS[col]}
 printf ${PATH_VARS[col]} >>data/moves
 
+evaluate() {
+  local EVALUATION
+  local EVAL
+  if [[ "${DEV:-true}" == "true" ]]; then
+    EVALUATION=$(./lib/evaluation/target/debug/evaluation < data/moves)
+  else
+    EVALUATION=$(./lib/evaluation/target/release/evaluation < data/moves)
+  fi
+  if [[ ! -z "$EVALUATION" ]]; then
+    echo "$EVALUATION" > data/eval
+    EVAL="<div class='bg-yellow-500 w-full' id='evalbar' style='height: ${EVALUATION}%;'></div>"
+    event evaluation "$EVAL" | publish yellow
+    event evaluation "$EVAL" | publish red
+  fi
+}
+
+# asynchronous evaluation
+evaluate &
+
 if check_connect_5head; then
   STR="$(date '+%h %d %H:%m') $TEAM"
-  sed -i "1s/^/$STR\n/" data/leaderboard
+  echo "$STR" >> data/leaderboard
   echo "$TEAM" > data/winlock
   event leaderboard "<div>$STR</div>" | publish yellow
   event leaderboard "<div>$STR</div>" | publish red
@@ -120,6 +139,7 @@ elif stalemate; then
   reset_board
 fi
 
+export UPDATE=true
 BOARD_YELLOW=$(component '/board/yellow' | tr -d '\n')
 BOARD_RED=$(component '/board/red' | tr -d '\n')
 event update "$BOARD_YELLOW" | publish yellow
