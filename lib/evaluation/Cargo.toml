@@ -1,0 +1,9 @@
+[package]
+name = "evaluation"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+connect4_cli = { git = "https://github.com/Algorhythm-sxv/connect4-ai", rev = "47fba6ebdcb80cada679586c8e33816b583f0a56" }

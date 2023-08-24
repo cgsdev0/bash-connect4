@@ -3,3 +3,5 @@ pubsub/
 uploads/
 
 static/tailwind.css
+lib/evaluation/target
+node_modules

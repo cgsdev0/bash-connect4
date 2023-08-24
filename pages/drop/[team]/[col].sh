@@ -104,6 +104,7 @@ else
 fi
 
 write $ROW ${PATH_VARS[col]}
+printf ${PATH_VARS[col]} >>data/moves
 
 if check_connect_5head; then
   STR="$(date '+%h %d %H:%m') $TEAM"
