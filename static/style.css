@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.square {
+  @apply w-16 h-16 border select-none;
+}
+
+.type-0 {
+  @apply rounded-full hover:bg-blue-100 cursor-pointer;
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(-300px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.type-R {
+  @apply bg-red-500 rounded-full;
+}
+
+.type-r {
+  @apply bg-red-500 rounded-full;
+  animation: fall 0.3s ease-in;
+}
+
+.type-Y {
+  @apply bg-yellow-500 rounded-full;
+}
+
+.type-y {
+  @apply bg-yellow-500 rounded-full;
+  animation: fall 0.3s ease-in;
+}
+
+body {
+  padding: 0 40px;
+}
+
+#signature {
+  position: absolute;
+  z-index: 100;
+  right: 20px;
+  top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#signature a {
+  text-decoration: none;
+}
+
+#signature a:hover {
+  text-decoration: underline;
+}
+
+#signature svg {
+  width: 36px;
+  height: 36px;
+  margin-top: -4px;
+  vertical-align: middle;
+  display: inline;
+}
+
+#form {
+  display: flex;
+  max-width: 400px;
+  flex-direction: column;
+}
+
+#count {
+  font-size: 24px;
+}
