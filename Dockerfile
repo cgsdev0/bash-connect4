@@ -1,21 +1,22 @@
 FROM node:20-alpine3.17 as tailwind
-
 COPY . /app
-
 WORKDIR /app
-
 RUN npx tailwindcss -i /app/static/style.css -o /app/build.css --minify
 
-FROM ubuntu as prod
-
-ENV DEV=false
-
-RUN apt-get update && apt-get install ucspi-tcp
-
-EXPOSE 3000
-
+FROM rust:1.71 as rust
 COPY . /app
+WORKDIR /app/lib/evaluation/
+RUN cargo build
+
+FROM ubuntu as prod
+ENV DEV=false
+RUN apt-get update && apt-get install ucspi-tcp
+EXPOSE 3000
+COPY . /app
+WORKDIR /app
 
 COPY --from=tailwind /app/build.css /app/static/tailwind.css
+RUN mkdir -p /app/lib/evaluation/target/debug
+COPY --from=rust /app/lib/evaluation/target/debug/evaluation /app/lib/evaluation/target/debug/evaluation
 
 CMD [ "/app/start.sh" ]
