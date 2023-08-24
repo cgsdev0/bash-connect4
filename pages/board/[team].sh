@@ -29,9 +29,14 @@ if [[ -f data/winlock ]]; then
     TURN_TEXT='<p class="mt-12 font-semibold text-2xl text-'${WINNER}'-500" id="turn" hx-swap-oob="true">'${WINNER^}' Wins!</p>'
 fi
 
+EVALUATION=$(cat data/moves | ./lib/evaluation/target/debug/evaluation)
+
 htmx_page << EOF
   $TURN_TEXT
   <table id="board" class="select-none $WINNING_TEAM" hx-swap="outerHTML" hx-sse="swap:update">
       ${BOARD}
   </table>
+  <div id="evaluation" hx-target="this" hx-swap-oob="true" class="w-full bg-red-500 h-12">
+      <div class="bg-yellow-500 h-full" style="width: ${EVALUATION}%"></div>
+  </div>
 EOF

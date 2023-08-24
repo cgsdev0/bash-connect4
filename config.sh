@@ -11,6 +11,7 @@ cat <<-EOF > data/board
 0000000
 EOF
 echo "red" > data/turn
+printf "" > data/moves
 rm -f data/winlock
 }
 
