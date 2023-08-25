@@ -106,9 +106,6 @@ fi
 write $ROW ${PATH_VARS[col]}
 printf ${PATH_VARS[col]} >>data/moves
 
-evaluation() {
-  echo "<div class='bg-yellow-500 w-full' id='evalbar' style='height: $1%;'></div>"
-}
 evaluate() {
   local EVALUATION
   local EVAL

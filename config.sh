@@ -16,12 +16,17 @@ echo "50" > data/eval
 rm -f data/winlock
 }
 
+evaluation() {
+  echo "<div class='bg-yellow-500 w-full' id='evalbar' style='height: $1%;'></div>"
+}
+
 publish_all() {
   tee >(publish red) >(publish yellow) > /dev/null
 }
 
 export -f publish_all
 export -f reset_board
+export -f evaluation
 
 if [[ ! -f data/board ]] \
   || [[ ! -f data/turn ]] \
