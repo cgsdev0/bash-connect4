@@ -106,6 +106,9 @@ fi
 write $ROW ${PATH_VARS[col]}
 printf ${PATH_VARS[col]} >>data/moves
 
+evaluation() {
+  echo "<div class='bg-yellow-500 w-full' id='evalbar' style='height: $1%;'></div>"
+}
 evaluate() {
   local EVALUATION
   local EVAL
@@ -116,27 +119,30 @@ evaluate() {
   fi
   if [[ ! -z "$EVALUATION" ]]; then
     echo "$EVALUATION" > data/eval
-    EVAL="<div class='bg-yellow-500 w-full' id='evalbar' style='height: ${EVALUATION}%;'></div>"
-    event evaluation "$EVAL" | publish yellow
-    event evaluation "$EVAL" | publish red
+    event evaluation "$(evaluation $EVALUATION)" | publish_all
   fi
 }
 
-# asynchronous evaluation
-evaluate &
 
 if check_connect_5head; then
-  STR="$(date '+%h %d %H:%m') $TEAM"
-  echo "$STR" >> data/leaderboard
+  STR="${TEAM_EMOJI[$TEAM]} $(date '+%h %d %H:%m') ${TEAM^} team won!"
+  printf "%s\n" "$STR" >> data/leaderboard
   echo "$TEAM" > data/winlock
-  event leaderboard "<div>$STR</div>" | publish yellow
-  event leaderboard "<div>$STR</div>" | publish red
+  if [[ "$TEAM" == "yellow" ]]; then
+    event evaluation "$(evaluation 100)" | publish_all
+  else
+    event evaluation "$(evaluation 0)" | publish_all
+  fi
+  event leaderboard "<div>$STR</div>" | publish_all
 elif stalemate; then
-  STR="$(date '+%h %d %H:%m') Stalemate :("
-  sed -i "1s/^/$STR\n/" data/leaderboard
-  event leaderboard "<div>$STR</div>" | publish yellow
-  event leaderboard "<div>$STR</div>" | publish red
+  STR="${TEAM_EMOJI[stalemate]} $(date '+%h %d %H:%m') Stalemate :("
+  printf "%s\n" "$STR" >> data/leaderboard
+  event evaluation "$(evaluation 50)" | publish_all
+  event leaderboard "<div>$STR</div>" | publish_all
   reset_board
+else
+  # asynchronous evaluation
+  evaluate &
 fi
 
 export UPDATE=true

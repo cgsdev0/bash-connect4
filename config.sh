@@ -16,6 +16,11 @@ echo "50" > data/eval
 rm -f data/winlock
 }
 
+publish_all() {
+  tee >(publish red) >(publish yellow) > /dev/null
+}
+
+export -f publish_all
 export -f reset_board
 
 if [[ ! -f data/board ]] \
@@ -32,3 +37,8 @@ fi
 declare -A TEAM_LETTER
 TEAM_LETTER[red]=R
 TEAM_LETTER[yellow]=Y
+
+declare -A TEAM_EMOJI
+TEAM_EMOJI[red]=🔴
+TEAM_EMOJI[yellow]=🟡
+TEAM_EMOJI[stalemate]=⚫
