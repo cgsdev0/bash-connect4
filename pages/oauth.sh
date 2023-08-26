@@ -18,6 +18,7 @@ ACCESS_TOKEN=$(echo "$TWITTER_RESPONSE" | jq -r '.access_token')
 RESPONSE="<pre>${TWITTER_RESPONSE}</pre>"
 
 if [[ -z "$ACCESS_TOKEN" ]] || [[ "$ACCESS_TOKEN" == "null" ]]; then
+  end_headers
   htmx_page <<-EOF
   <div class="container">
     <h1>Error</h1>
