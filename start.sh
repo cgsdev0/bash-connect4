@@ -2,6 +2,14 @@
 
 cd "${0%/*}"
 
+# remove any old subscriptions; they are no longer valid
+rm -rf pubsub
+
+mkdir -p sessions
+mkdir -p pubsub
+mkdir -p data
+mkdir -p uploads
+
 [[ -f 'config.sh' ]] && source config.sh
 
 if [[ "${DEV:-true}" == "true" ]]; then
@@ -13,14 +21,6 @@ if [[ "${DEV:-true}" == "true" ]]; then
   cargo watch -x build -C lib/evaluation | sed 's/^/[evaluation] /' &
   RS_PID=$!
 fi
-
-# remove any old subscriptions; they are no longer valid
-rm -rf pubsub
-
-mkdir -p sessions
-mkdir -p pubsub
-mkdir -p data
-mkdir -p uploads
 
 PORT=${PORT:-3000}
 echo -n "Listening on port "
