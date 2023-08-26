@@ -1,6 +1,11 @@
 # headers
 source .secrets
 
+HOST=${HTTP_HEADERS["host"]}
+PROTOCOL="https://"
+if [[ "$HOST" =~ "localhost"* ]]; then
+  PROTOCOL="http://"
+fi
 
 AUTHORIZATION_CODE=${QUERY_PARAMS["code"]}
 
