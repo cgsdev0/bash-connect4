@@ -33,7 +33,6 @@ EVALUATION=$(cat data/eval)
 
 if [[ -f data/winlock ]]; then
     WINNER=$(cat data/winlock)
-    WINNING_TEAM="bg-$WINNER-100"
     if [[ "$WINNER" == "red" ]]; then
       EVALUATION="0"
     else
@@ -79,7 +78,7 @@ if [[ -z "$UPDATE" ]]; then
       <div id="board-wrapper" class="flex flex-row">
         $(bar)
         <div sse-swap="update" class="relative">
-          <table id="board" class="select-none $WINNING_TEAM">
+          <table id="board" class="select-none">
               ${BOARD}
           </table>
           $(button)
@@ -91,7 +90,7 @@ else
   htmx_page <<-EOF
     $(turn_text)
     $(button)
-    <table id="board" class="select-none $WINNING_TEAM">
+    <table id="board" class="select-none">
         ${BOARD}
     </table>
 EOF
