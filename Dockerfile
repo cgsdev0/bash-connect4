@@ -11,7 +11,7 @@ RUN npx tailwindcss -i /app/static/style.css -o /app/build.css --minify
 
 FROM ubuntu as prod
 ENV DEV=false
-RUN apt-get update && apt-get install ucspi-tcp
+RUN apt-get update && apt-get install -y ucspi-tcp jq curl
 EXPOSE 3000
 COPY . /app
 WORKDIR /app
