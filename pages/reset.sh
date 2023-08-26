@@ -1,3 +1,8 @@
+if [[ ! -f "data/winlock" ]]; then
+  # only allow POST to this endpoint
+  return $(status_code 425)
+fi
+
 if [[ "$REQUEST_METHOD" != "POST" ]]; then
   # only allow POST to this endpoint
   return $(status_code 405)

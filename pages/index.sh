@@ -24,8 +24,13 @@ else
       <button hx-post="/join/yellow">Join yellow team</button>
 EOF
   else
-    header Location /team/$COLOR
     end_headers
-    return $(status_code 302)
+    htmx_page <<-EOF
+      <div hx-ext="sse" sse-connect="/sse/$COLOR">
+      <div class="flex">
+          $(component "/board/$COLOR")
+      </div>
+      $(component "/leaderboard")
+EOF
   fi
 fi

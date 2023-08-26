@@ -5,7 +5,12 @@
 #evalbar {
   transition: height 0.5s ease-out;
 }
-
+.new-game {
+  @apply bg-blue-500 hover:bg-blue-700 text-white font-bold py-5 px-4 mt-8 rounded;
+  position: absolute;
+  top: 200px;
+  left: 240px;
+}
 .square {
   @apply w-16 h-16 border select-none;
 }

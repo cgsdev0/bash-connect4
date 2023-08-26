@@ -64,6 +64,14 @@ bar() {
 EOF
 }
 
+button() {
+  [[ -f data/winlock ]] || return
+  cat <<-EOF
+  <button class="new-game" hx-post="/reset" hx-swap="delete" hx-swap-oob="true" id="newgame">
+      New game
+  </button>
+EOF
+}
 if [[ -z "$UPDATE" ]]; then
   htmx_page <<-EOF
     <div id="game-wrapper" class="flex flex-col">
@@ -74,6 +82,7 @@ if [[ -z "$UPDATE" ]]; then
           <table id="board" class="select-none $WINNING_TEAM">
               ${BOARD}
           </table>
+          $(button)
         </div>
       </div>
     </div>
@@ -81,6 +90,7 @@ EOF
 else
   htmx_page <<-EOF
     $(turn_text)
+    $(button)
     <table id="board" class="select-none $WINNING_TEAM">
         ${BOARD}
     </table>
