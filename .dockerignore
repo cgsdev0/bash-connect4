@@ -1,7 +1,9 @@
 data/
 pubsub/
 uploads/
+node_modules/ 
+sessions/
 
 static/tailwind.css
 lib/evaluation/target
-node_modules
+config.secret.sh
