@@ -1,12 +1,13 @@
+FROM rust:1.71 as rust
+COPY /lib /app/lib
+COPY opening_database.bin /app
+WORKDIR /app/lib/evaluation/
+RUN cargo build --release
+
 FROM node:20-alpine3.17 as tailwind
 COPY . /app
 WORKDIR /app
 RUN npx tailwindcss -i /app/static/style.css -o /app/build.css --minify
-
-FROM rust:1.71 as rust
-COPY . /app
-WORKDIR /app/lib/evaluation/
-RUN cargo build --release
 
 FROM ubuntu as prod
 ENV DEV=false
