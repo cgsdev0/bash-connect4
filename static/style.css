@@ -10,6 +10,13 @@
   @apply w-16 h-16 border select-none;
 }
 
+.square div {
+  @apply h-full flex items-center;
+}
+.square img {
+  @apply w-12 h-12 rounded-full mx-auto;
+}
+
 .type-0 {
   @apply rounded-full hover:bg-blue-100 cursor-pointer;
 }

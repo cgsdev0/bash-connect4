@@ -1,5 +1,6 @@
 PROJECT_NAME=connect4
 TAILWIND=on
+ENABLE_SESSIONS=true
 
 reset_board() {
 cat <<-EOF > data/board
@@ -12,6 +13,7 @@ cat <<-EOF > data/board
 EOF
 echo "red" > data/turn
 printf "" > data/moves
+printf "" > data/pics
 echo "50" > data/eval
 rm -f data/winlock
 }
@@ -31,11 +33,15 @@ export -f evaluation
 if [[ ! -f data/board ]] \
   || [[ ! -f data/turn ]] \
   || [[ ! -f data/leaderboard ]] \
+  || [[ ! -f data/colors ]] \
+  || [[ ! -f data/pics ]] \
   || [[ ! -f data/eval ]]; then
     touch data/eval
     touch data/board
     touch data/turn
     touch data/leaderboard
+    touch data/colors
+    touch data/pics
     reset_board
 fi
 

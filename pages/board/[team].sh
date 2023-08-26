@@ -9,12 +9,19 @@ BOARD=$(awk '
   printf("<tr class=\"select-none\">")
   split($0, chars, "")
   for (i=1; i <= length($0); i++) {
-    printf("<td hx-post=\"/drop/'$TEAM'/%d\" class=\"square type-%s\"></td>\n", i, chars[i])
+    printf("<td hx-post=\"/drop/'$TEAM'/%d\" class=\"square\"><div class=\"type-%s\">PLACEHOLDER-%s-</div></td>\n", i, chars[i], (NR -1) * 7 + (i - 1))
   }
   printf("</tr>")
 }
 ' data/board)
 
+while read -r CELL_ID PIC; do
+  debug "$CELL_ID"
+  BOARD=${BOARD/PLACEHOLDER-${CELL_ID}-/<img src="$PIC" />}
+done < data/pics
+for i in {0..42}; do
+  BOARD=${BOARD//PLACEHOLDER-$i-}
+done
 CURRENT_TEAM="$(cat data/turn)"
 
 # text-red-500

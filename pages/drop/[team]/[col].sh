@@ -1,3 +1,6 @@
+if [[ -z "${SESSION[id]}" ]]; then
+  return $(status_code 401)
+fi
 
 if [[ "$REQUEST_METHOD" != "POST" ]]; then
   # only allow POST to this endpoint
@@ -104,7 +107,11 @@ else
 fi
 
 write $ROW ${PATH_VARS[col]}
+COL=${PATH_VARS[col]}
 printf ${PATH_VARS[col]} >>data/moves
+CELL_ID=$(( ROW * 7 + (COL - 1) ))
+debug "$CELL_ID"
+printf "%s %s\n" $CELL_ID ${SESSION[pic]} >>data/pics
 
 evaluate() {
   local EVALUATION

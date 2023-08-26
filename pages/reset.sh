@@ -3,6 +3,10 @@ if [[ "$REQUEST_METHOD" != "POST" ]]; then
   return $(status_code 405)
 fi
 
+if [[ -z "${SESSION[id]}" ]]; then
+  return $(status_code 401)
+fi
+
 source config.sh
 
 reset_board
