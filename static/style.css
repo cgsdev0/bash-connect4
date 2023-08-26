@@ -2,28 +2,63 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+body {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding: 0 !important;
+  background-color: #202b38;
+  max-width: 800px;
+  margin: 0 auto;
+  @apply bg-white dark:bg-slate-800;
+}
+
 #evalbar {
   transition: height 0.5s ease-out;
+}
+
+h1 {
+  @apply text-blue-500 text-4xl mt-3 mb-3 w-full text-center;
 }
 .new-game {
   @apply bg-blue-500 hover:bg-blue-700 text-white font-bold py-5 px-4 mt-8 rounded;
   position: absolute;
-  top: 200px;
-  left: 240px;
+  top: 160px;
+  left: 160px;
 }
 .square {
-  @apply w-16 h-16 border select-none;
+  @apply w-16 h-16 aspect-square border select-none border-gray-300 dark:border-gray-800;
+}
+
+.btn {
+  @apply rounded-lg text-center p-4 text-lg;
+}
+
+.twitter {
+  @apply bg-blue-400 hover:bg-blue-500;
+}
+
+.twitch {
+  @apply bg-purple-600 hover:bg-purple-700;
+}
+
+.btn-red {
+  @apply bg-red-500 hover:bg-red-600;
+}
+
+.btn-yellow {
+  @apply bg-yellow-500 hover:bg-yellow-600;
 }
 
 .square div {
   @apply h-full flex items-center;
 }
 .square img {
-  @apply w-12 h-12 rounded-full mx-auto;
+  @apply w-10 h-10 rounded-full mx-auto;
 }
 
 .type-0 {
-  @apply rounded-full hover:bg-blue-100 cursor-pointer;
+  @apply rounded-full hover:bg-blue-200 dark:hover:bg-blue-900 cursor-pointer;
 }
 
 @keyframes fall {
@@ -54,10 +89,6 @@
   animation: fall 0.3s ease-in;
 }
 
-body {
-  padding: 0 40px;
-}
-
 #signature {
   position: absolute;
   z-index: 100;
@@ -70,6 +101,7 @@ body {
 
 #signature a {
   text-decoration: none;
+  color: #41adff;
 }
 
 #signature a:hover {

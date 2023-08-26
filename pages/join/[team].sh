@@ -20,6 +20,6 @@ fi
 
 printf "%s\t%s\n" ${SESSION[id]} $TEAM >> data/colors
 
-header HX-Redirect /team/$TEAM
+header HX-Refresh true
 end_headers
 end_headers

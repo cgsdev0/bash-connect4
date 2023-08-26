@@ -129,7 +129,7 @@ evaluate() {
 
 
 if check_connect_5head; then
-  STR="${TEAM_EMOJI[$TEAM]} $(date '+%h %d %H:%m') ${TEAM^} team won!"
+  STR="${TEAM_EMOJI[$TEAM]} $(date '+%h %d %H:%M') ${TEAM^} team won!"
   printf "%s\n" "$STR" >> data/leaderboard
   echo "$TEAM" > data/winlock
   if [[ "$TEAM" == "yellow" ]]; then
@@ -139,7 +139,7 @@ if check_connect_5head; then
   fi
   event leaderboard "<div>$STR</div>" | publish_all
 elif stalemate; then
-  STR="${TEAM_EMOJI[stalemate]} $(date '+%h %d %H:%m') Stalemate :("
+  STR="${TEAM_EMOJI[stalemate]} $(date '+%h %d %H:%M') Stalemate :("
   printf "%s\n" "$STR" >> data/leaderboard
   event evaluation "$(evaluation 50)" | publish_all
   event leaderboard "<div>$STR</div>" | publish_all

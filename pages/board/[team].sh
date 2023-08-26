@@ -47,9 +47,9 @@ fi
 
 turn_text() {
     if [[ -z "$WINNER" ]]; then
-      echo '<p '"$OOB"' class="mt-12 font-semibold text-2xl text-'${CURRENT_TEAM}'-500" id="turn">'${CURRENT_TEAM^}'&apos;s Turn</p>'
+      echo '<h1 '"$OOB"' class="h1 font-semibold text-'${CURRENT_TEAM}'-500" id="turn">'${CURRENT_TEAM^}'&apos;s Turn</h1>'
     else
-      echo '<p '"$OOB"' class="mt-12 font-semibold text-2xl text-'${WINNER}'-500" id="turn">'${WINNER^}' Wins!</p>'
+      echo '<h1 '"$OOB"' class="h1 font-semibold text-'${WINNER}'-500" id="turn">'${WINNER^}' Wins!</h1>'
     fi
 }
 
@@ -58,7 +58,7 @@ bar() {
     return
   fi
   cat <<-EOF
-  <div id="evaluation" class="h-full bg-red-500 w-12" sse-swap="evaluation">
+  <div id="evaluation" class="rounded overflow-hidden h-full bg-red-500 w-8 mr-6 -ml-2" sse-swap="evaluation">
     <div class="bg-yellow-500 w-full" id="evalbar" style="height: ${EVALUATION}%;"></div>
   </div>
 EOF
@@ -67,7 +67,7 @@ EOF
 button() {
   [[ -f data/winlock ]] || return
   cat <<-EOF
-  <button class="new-game" hx-post="/reset" hx-swap="delete" hx-swap-oob="true" id="newgame">
+  <button class="new-game" hx-post="/reset" id="newgame">
       New game
   </button>
 EOF
@@ -78,7 +78,7 @@ if [[ -z "$UPDATE" ]]; then
       $(turn_text)
       <div id="board-wrapper" class="flex flex-row">
         $(bar)
-        <div sse-swap="update">
+        <div sse-swap="update" class="relative">
           <table id="board" class="select-none $WINNING_TEAM">
               ${BOARD}
           </table>
