@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=v0.4.3
+VERSION=v0.5.0
 
 declare -A HTTP_HEADERS
 declare -A FILE_UPLOADS
@@ -9,6 +9,7 @@ declare -A QUERY_PARAMS
 declare -A FORM_DATA
 declare -A PATH_VARS
 declare -A COOKIES
+declare -A SESSION
 
 [[ -f 'config.sh' ]] && source config.sh
 
@@ -29,6 +30,9 @@ respond() {
     shift
     printf "HTTP/1.1 %s %s\r\n" "$CODE" "$*"
     header Server "bash-stack ${VERSION:-devbuild}"
+    [[ ! -z "$SESSION_HEADER_TO_BE_WRITTEN" ]] && \
+      printf "%s" "$SESSION_HEADER_TO_BE_WRITTEN"
+
 }
 
 end_headers() {
@@ -65,6 +69,39 @@ urldecode() {
     printf '%b\n' "${_//%/\\x}"
 }
 
+function create_or_resume_session() {
+  local KEY
+  local VAL
+  if [[ -z "${COOKIES[_session]}" ]]; then
+    SESSION_ID="$(tr -dc A-Za-z0-9 </dev/urandom | head -c 32 ; echo '')"
+    SESSION_HEADER_TO_BE_WRITTEN=$(header Set-Cookie "_session=$SESSION_ID; Path=/; Secure; HttpOnly")
+  else
+    SESSION_ID=$(echo "${COOKIES[_session]}" | tr -dc A-Za-z0-9)
+  fi
+  if [[ -f "sessions/$SESSION_ID" ]]; then
+    while IFS= read -r line; do
+      KEY="$(echo "$line" | cut -f1)"
+      VAL="$(echo "$line" | cut -f2-)"
+      SESSION["$KEY"]="$VAL"
+    done < "sessions/$SESSION_ID"
+  fi
+}
+
+function save_session() {
+  if [[ "${ENABLE_SESSIONS:-false}" != true ]]; then
+    debug "Error: You must set ENABLE_SESSIONS=true before calling save_session!"
+    return
+  fi
+  local KEY
+  if [[ -z "$SESSION_ID" ]]; then
+    return
+  fi
+  touch "sessions/$SESSION_ID"
+  for KEY in ${!SESSION[@]}; do
+    printf "%s\t%s\n" "$KEY" "${SESSION[$KEY]}"
+  done > "sessions/$SESSION_ID"
+}
+
 function _inject_hmr() {
   if [[ -z "$USE_HMR" ]]; then
     return
@@ -88,8 +125,8 @@ function htmx_page() {
   <!doctype html>
   <html>
   <head>
-  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
   ${STYLE_TEXT}
   <script src="https://unpkg.com/htmx.org@1.9.3/dist/htmx.min.js" integrity="sha384-lVb3Rd/Ca0AxaoZg5sACe8FJKF0tnUgR2Kd7ehUOG5GCcROv5uBIZsOqovBAcWua" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/hyperscript.org@0.9.8"></script>
@@ -349,10 +386,13 @@ writeHttpResponse() {
     return
   fi
   matchRoute "$REQUEST_PATH"
+
+  [[ "${ENABLE_SESSIONS:-false}" == "true" ]] && create_or_resume_session
+
   if [[ ! -z "$USE_HMR" ]] && [[ "$REQUEST_PATH" == "/hmr" ]]; then
     if [[ "$REQUEST_METHOD" == "POST" ]]; then
       respond 204 OK
-      header HX-Redirect "${HTTP_HEADERS[HX-Current-Url]}"
+      header HX-Redirect "${HTTP_HEADERS[hx-current-url]}"
       end_headers
       return
     fi
@@ -391,6 +431,7 @@ writeHttpResponse() {
     end_headers
     return
   fi
+
 
   if directive_test=$(head -1 "pages/${ROUTE_SCRIPT}"); then
     if [[ "$directive_test" == "# sse" ]]; then
@@ -551,6 +592,7 @@ export -f findPredefinedRoutes
 export -f findDynamicRoutes
 export -f findCatchAllRoutes
 export -f matchRoute
+export -f save_session
 
 parseHttpRequest
 writeHttpResponse
