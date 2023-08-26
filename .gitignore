@@ -6,4 +6,4 @@ sessions/
 
 static/tailwind.css
 lib/evaluation/target
-config.secret.sh
+.secrets

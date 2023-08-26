@@ -1,6 +1,6 @@
 # headers
 source config.sh
-source config.secret.sh
+source .secrets
 
 if [[ -z "${SESSION[id]}" ]]; then
 end_headers

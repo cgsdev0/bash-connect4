@@ -1,5 +1,5 @@
 # headers
-source config.secret.sh
+source .secrets
 
 HOST=${HTTP_HEADERS["host"]}
 PROTOCOL="https://"
