@@ -34,7 +34,7 @@ TWITCH_RESPONSE=$(curl -Ss -X GET 'https://api.twitch.tv/helix/users' \
   -H "Authorization: Bearer ${ACCESS_TOKEN}" \
   -H "Client-Id: $TWITCH_CLIENT_ID")
 
-SESSION[id]="$(echo $TWITCH_RESPONSE | jq -r '.data[0].id')"
+SESSION[id]="twitch:$(echo $TWITCH_RESPONSE | jq -r '.data[0].id')"
 SESSION[pic]="$(echo $TWITCH_RESPONSE | jq -r '.data[0].profile_image_url')"
 SESSION[username]="$(echo $TWITCH_RESPONSE | jq -r '.data[0].login')"
 

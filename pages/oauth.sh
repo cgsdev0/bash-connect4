@@ -41,7 +41,7 @@ TWITTER_RESPONSE=$(curl -Ss -X GET 'https://api.twitter.com/2/users/me?user.fiel
 SESSION[pic]="$(echo $TWITTER_RESPONSE | jq -r '.data.profile_image_url')"
 SESSION[username]="$(echo $TWITTER_RESPONSE | jq -r '.data.username')"
 SESSION[pic]=${SESSION[pic]/_normal/}
-SESSION[id]="$(echo $TWITTER_RESPONSE | jq -r '.data.id')"
+SESSION[id]="twitter:$(echo $TWITTER_RESPONSE | jq -r '.data.id')"
 
 save_session
 
