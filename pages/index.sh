@@ -36,6 +36,9 @@ EOF
       <div class="flex">
           $(component "/board/$COLOR")
       </div>
+      <div sse-swap="conns">
+        $(component /conns)
+      </div>
       $(component "/leaderboard")
 EOF
   fi

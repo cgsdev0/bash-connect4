@@ -10,6 +10,9 @@ mkdir -p pubsub
 mkdir -p data
 mkdir -p uploads
 
+touch pubsub/conns-yellow
+touch pubsub/conns-red
+
 [[ -f 'config.sh' ]] && source config.sh
 
 if [[ "${DEV:-true}" == "true" ]]; then

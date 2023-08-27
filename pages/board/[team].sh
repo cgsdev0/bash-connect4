@@ -16,7 +16,6 @@ BOARD=$(awk '
 ' data/board)
 
 while read -r CELL_ID PIC; do
-  debug "$CELL_ID"
   BOARD=${BOARD/PLACEHOLDER-${CELL_ID}-/<img src="$PIC" />}
 done < data/pics
 for i in {0..42}; do

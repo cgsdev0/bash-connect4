@@ -461,6 +461,7 @@ writeHttpResponse() {
       output &
       PID=$!
 
+      CONN_ID="$(basename $SUB_FD)"
       [[ $(type -t on_open) == function ]] && on_open 1>&2
 
       while IFS= read -r line; do

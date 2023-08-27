@@ -13,6 +13,30 @@ body {
   @apply bg-white dark:bg-slate-800;
 }
 
+#conns {
+  @apply flex flex-col gap-2 mb-6 mt-10;
+}
+
+.players {
+  @apply flex items-center border border-gray-300 dark:border-gray-800 p-2 rounded-lg;
+}
+
+.players p {
+  @apply text-gray-400 dark:text-gray-700;
+}
+
+.players h2 {
+  @apply w-[50px] h-[50px] text-center;
+}
+.players .red {
+  @apply text-red-500 -rotate-90 font-bold;
+}
+.players .yellow {
+  @apply text-yellow-500 -rotate-90 font-bold;
+}
+.players img {
+  @apply w-12 h-12 rounded-full;
+}
 #evalbar {
   transition: height 0.5s ease-out;
 }
